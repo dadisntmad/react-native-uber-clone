@@ -35,6 +35,10 @@ const styles = StyleSheet.create({
   navigationButton: {
     alignSelf: 'center',
   },
+  errorMessage: {
+    color: 'red',
+    paddingVertical: 7,
+  },
 })
 
 export default styles

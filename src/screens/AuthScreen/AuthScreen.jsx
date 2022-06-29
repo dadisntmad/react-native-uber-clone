@@ -2,15 +2,40 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, TextInput, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { auth, db } from '../../../firebase'
+import { useForm, Controller } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { signInSchemeValidation, signUpSchemeValidation } from '../../validation/validation'
 
 import styles from './styles'
 
 export const AuthScreen = () => {
   const navigation = useNavigation()
   const [formType, setFormType] = useState('signin')
-  const [fullName, setFullName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+
+  const {
+    control: controlSignUp,
+    handleSubmit: handleSubmitSignUp,
+    formState: { errors: errorsSignUp },
+  } = useForm({
+    resolver: yupResolver(signUpSchemeValidation),
+    defaultValues: {
+      fullName: '',
+      email: '',
+      password: '',
+    },
+  })
+
+  const {
+    control: controlSignIn,
+    handleSubmit: handleSubmitSignIn,
+    formState: { errors: errorsSignIn },
+  } = useForm({
+    resolver: yupResolver(signInSchemeValidation),
+    defaultValues: {
+      loginEmail: '',
+      loginPassword: '',
+    },
+  })
 
   const navigateToSignUp = () => {
     setFormType('signup')
@@ -20,14 +45,14 @@ export const AuthScreen = () => {
     setFormType('signin')
   }
 
-  const signUp = () => {
+  const signUp = (values) => {
     auth
-      .createUserWithEmailAndPassword(email, password)
+      .createUserWithEmailAndPassword(values.email, values.password)
       .then((userCredential) => {
         const data = {
           uid: userCredential.user?.uid,
-          fullName,
-          email,
+          fullName: values.fullName,
+          email: values.email,
         }
         db.collection('users').doc(userCredential.user?.uid).set(data)
       })
@@ -36,9 +61,9 @@ export const AuthScreen = () => {
       })
   }
 
-  const signIn = () => {
+  const signIn = (values) => {
     auth
-      .signInWithEmailAndPassword(email, password)
+      .signInWithEmailAndPassword(values.loginEmail, values.loginPassword)
       .then((userCredential) => {
         console.log(userCredential)
       })
@@ -51,9 +76,6 @@ export const AuthScreen = () => {
     auth.onAuthStateChanged((user) => {
       if (user) {
         navigation.replace('Home')
-        setFullName('')
-        setEmail('')
-        setPassword('')
       } else {
         console.log('user is logged out')
       }
@@ -66,23 +88,49 @@ export const AuthScreen = () => {
         {formType === 'signin' ? (
           <View>
             <Text style={styles.questionOne}>Log in to your account</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Please enter email"
-              keyboardType="email-address"
-              clearButtonMode="while-editing"
-              value={email}
-              onChangeText={(text) => setEmail(text)}
+            <Controller
+              control={controlSignIn}
+              rules={{
+                required: true,
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={styles.input}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  placeholder="Please enter email"
+                  keyboardType="email-address"
+                  clearButtonMode="while-editing"
+                />
+              )}
+              name="loginEmail"
             />
-            <TextInput
-              style={styles.input}
-              placeholder="Please enter password"
-              secureTextEntry
-              clearButtonMode="while-editing"
-              value={password}
-              onChangeText={(text) => setPassword(text)}
+            {errorsSignIn.loginEmail && (
+              <Text style={styles.errorMessage}>{errorsSignIn.loginEmail?.message}</Text>
+            )}
+            <Controller
+              control={controlSignIn}
+              rules={{
+                required: true,
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={styles.input}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  placeholder="Please enter password"
+                  secureTextEntry
+                  clearButtonMode="while-editing"
+                />
+              )}
+              name="loginPassword"
             />
-            <TouchableOpacity style={styles.button} onPress={signIn}>
+            {errorsSignIn.loginPassword && (
+              <Text style={styles.errorMessage}>{errorsSignIn.loginPassword?.message}</Text>
+            )}
+            <TouchableOpacity style={styles.button} onPress={handleSubmitSignIn(signIn)}>
               <Text style={styles.buttonText}>Sign In</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.navigationButton} onPress={navigateToSignUp}>
@@ -93,31 +141,70 @@ export const AuthScreen = () => {
           <View>
             <Text style={styles.questionOne}>What's your name?</Text>
             <Text style={styles.questionTwo}>How should we properly address you?</Text>
-            <TextInput
-              style={styles.input}
-              secureTextEntry={false}
-              placeholder="Please enter full name"
-              clearButtonMode="while-editing"
-              value={fullName}
-              onChangeText={(text) => setFullName(text)}
+            <Controller
+              control={controlSignUp}
+              rules={{
+                required: true,
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={styles.input}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  secureTextEntry={false}
+                  placeholder="Please enter full name"
+                  clearButtonMode="while-editing"
+                />
+              )}
+              name="fullName"
             />
-            <TextInput
-              style={styles.input}
-              placeholder="Please enter email"
-              keyboardType="email-address"
-              clearButtonMode="while-editing"
-              value={email}
-              onChangeText={(text) => setEmail(text)}
+            {errorsSignUp.fullName && (
+              <Text style={styles.errorMessage}>{errorsSignUp.fullName?.message}</Text>
+            )}
+            <Controller
+              control={controlSignUp}
+              rules={{
+                required: true,
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={styles.input}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  placeholder="Please enter email"
+                  keyboardType="email-address"
+                  clearButtonMode="while-editing"
+                />
+              )}
+              name="email"
             />
-            <TextInput
-              style={styles.input}
-              placeholder="Please enter password"
-              secureTextEntry
-              clearButtonMode="while-editing"
-              value={password}
-              onChangeText={(text) => setPassword(text)}
+            {errorsSignUp.email && (
+              <Text style={styles.errorMessage}>{errorsSignUp.email?.message}</Text>
+            )}
+            <Controller
+              control={controlSignUp}
+              rules={{
+                required: true,
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={styles.input}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  placeholder="Please enter password"
+                  secureTextEntry
+                  clearButtonMode="while-editing"
+                />
+              )}
+              name="password"
             />
-            <TouchableOpacity style={styles.button} onPress={signUp}>
+            {errorsSignUp.password && (
+              <Text style={styles.errorMessage}>{errorsSignUp.password?.message}</Text>
+            )}
+            <TouchableOpacity style={styles.button} onPress={handleSubmitSignUp(signUp)}>
               <Text style={styles.buttonText}>Sign Up</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.navigationButton} onPress={navigateToSignIn}>
