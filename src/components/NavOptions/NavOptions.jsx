@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
 import car from '../../../assets/car.png'
 import food from '../../../assets/food.png'
@@ -13,7 +14,7 @@ const data = [
     id: '1',
     img: car,
     title: 'Get a ride',
-    screen: 'Ride',
+    screen: 'Map',
   },
   {
     id: '2',
@@ -24,12 +25,14 @@ const data = [
 ]
 
 export const NavOptions = () => {
+  const navigation = useNavigation()
+
   return (
     <FlatList
       data={data}
       keyExtractor={({ id }) => id}
       renderItem={({ item }) => (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate(item.screen)}>
           <View style={styles.container}>
             <Image style={styles.image} source={item.img} />
             <Text style={styles.title}>{item.title}</Text>

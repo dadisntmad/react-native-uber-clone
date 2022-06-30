@@ -5,6 +5,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 24,
+    paddingHorizontal: 14,
   },
   icon: {
     marginRight: 10,
@@ -16,6 +17,7 @@ const styles = StyleSheet.create({
   location: {
     fontSize: 15,
     fontWeight: '500',
+    marginBottom: 5,
   },
   address: {
     color: 'grey',
