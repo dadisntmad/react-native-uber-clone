@@ -10,6 +10,10 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     fontSize: 19,
   },
+  destination: {
+    flexShrink: 1,
+    marginBottom: 14,
+  },
 })
 
 export default styles
