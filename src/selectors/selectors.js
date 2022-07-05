@@ -2,3 +2,6 @@
 export const selectOrigin = ({ nav }) => nav.origin
 export const selectDestination = ({ nav }) => nav.destination
 export const selectTravelTimeInformation = ({ nav }) => nav.travelTimeInformation
+
+// food slice
+export const selectRestaurants = ({ food }) => food.restaurants
