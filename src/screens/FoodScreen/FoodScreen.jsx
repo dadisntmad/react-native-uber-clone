@@ -44,7 +44,7 @@ export const FoodScreen = () => {
         data={restaurants}
         keyExtractor={({ id }) => id}
         renderItem={({ item }) => (
-          <Pressable>
+          <Pressable onPress={() => navigation.navigate('Restaurant', { item })}>
             <View>
               <Image style={styles.background} source={{ uri: item.image_url }} />
               <View style={styles.info}>

@@ -4,6 +4,7 @@ import { HomeScreen } from '../screens/HomeScreen/HomeScreen'
 import { MapScreen } from '../screens/MapScreen/MapScreen'
 import { FoodScreen } from '../screens/FoodScreen/FoodScreen'
 import { CartScreen } from '../screens/CartScreen/CartScreen'
+import { RestaurantDetailed } from '../screens/RestaurantDetailed/RestaurantDetailed'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 const Stack = createNativeStackNavigator()
@@ -19,6 +20,7 @@ export const Navigation = () => {
       <Stack.Screen name="Map" component={MapScreen} />
       <Stack.Screen name="Food" component={FoodScreen} />
       <Stack.Screen name="Cart" component={CartScreen} />
+      <Stack.Screen name="Restaurant" component={RestaurantDetailed} />
     </Stack.Navigator>
   )
 }
