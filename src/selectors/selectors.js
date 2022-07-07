@@ -5,3 +5,5 @@ export const selectTravelTimeInformation = ({ nav }) => nav.travelTimeInformatio
 
 // food slice
 export const selectRestaurants = ({ food }) => food.restaurants
+export const selectSelectedFood = ({ food }) => food.selectedFood
+export const selectTotalPrice = ({ food }) => food.totalPrice

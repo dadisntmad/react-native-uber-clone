@@ -1,15 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { fetchRestaurants } from '../actions/food'
+import { calculateTotalSum } from '../../components/utils/calculateTotalSum'
 
 const initialState = {
   restaurants: [],
   isLoading: false,
   error: '',
+  selectedFood: [],
+  totalPrice: 0,
 }
 
 const foodSlice = createSlice({
   name: 'food',
   initialState,
+  reducers: {
+    setSelectedFood(state, action) {
+      if (action.payload.checkboxValue) {
+        state.selectedFood = [...state.selectedFood, action.payload]
+        state.totalPrice = calculateTotalSum(state.selectedFood)
+      } else {
+        state.selectedFood = state.selectedFood.filter((item) => item.id !== action.payload.id)
+        state.totalPrice = calculateTotalSum(state.selectedFood)
+      }
+    },
+  },
   extraReducers: {
     [fetchRestaurants.fulfilled.type]: (state, action) => {
       state.isLoading = false
@@ -26,6 +40,6 @@ const foodSlice = createSlice({
   },
 })
 
-export const { setLocation } = foodSlice.actions
+export const { setSelectedFood } = foodSlice.actions
 
 export default foodSlice.reducer

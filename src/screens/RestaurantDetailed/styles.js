@@ -39,13 +39,13 @@ const styles = StyleSheet.create({
   menuContainer: {
     padding: 14,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: 'gray',
   },
   foodInfoContainer: {
-    maxWidth: 230,
+    width: 225,
   },
   foodTitle: {
     fontSize: 18,

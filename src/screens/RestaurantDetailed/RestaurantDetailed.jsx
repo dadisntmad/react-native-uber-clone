@@ -1,6 +1,10 @@
 import React from 'react'
 import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native'
 import { useRoute } from '@react-navigation/native'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectSelectedFood, selectTotalPrice } from '../../selectors/selectors'
+import { setSelectedFood } from '../../redux/slices/foodSlice'
+import BouncyCheckbox from 'react-native-bouncy-checkbox'
 
 import styles from './styles'
 
@@ -46,7 +50,21 @@ const data = [
 ]
 
 export const RestaurantDetailed = () => {
+  const dispatch = useDispatch()
   const route = useRoute()
+  const selectedFood = useSelector(selectSelectedFood)
+  const totalPrice = useSelector(selectTotalPrice)
+
+  const isFoodInCart = (food, cartItems) => Boolean(cartItems.find((item) => item.id === food.id))
+
+  const selectFood = (item, checkboxValue) => {
+    dispatch(
+      setSelectedFood({
+        ...item,
+        checkboxValue: checkboxValue,
+      }),
+    )
+  }
 
   return (
     <View style={styles.container}>
@@ -64,19 +82,28 @@ export const RestaurantDetailed = () => {
       </View>
       <ScrollView style={{ marginBottom: 24 }} showsVerticalScrollIndicator={false}>
         {data.map((food) => (
-          <View key={food.id} style={styles.menuContainer}>
+          <View key={food?.id} style={styles.menuContainer}>
+            <BouncyCheckbox
+              iconStyle={{ borderRadius: 0 }}
+              size={24}
+              fillColor="green"
+              isChecked={isFoodInCart(food, selectedFood)}
+              onPress={(checkboxValue) => selectFood(food, checkboxValue)}
+            />
             <View style={styles.foodInfoContainer}>
-              <Text style={styles.foodTitle}>{food.title}</Text>
-              <Text style={styles.foodDescription}>{food.description}</Text>
-              <Text>{food.price}</Text>
+              <Text style={styles.foodTitle}>{food?.title}</Text>
+              <Text style={styles.foodDescription}>{food?.description}</Text>
+              <Text>{food?.price}</Text>
             </View>
-            <Image style={styles.foodImage} source={{ uri: food.image }} />
+            <Image style={styles.foodImage} source={{ uri: food?.image }} />
           </View>
         ))}
       </ScrollView>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>View cart $20</Text>
-      </TouchableOpacity>
+      {totalPrice > 0 && (
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>View cart ${totalPrice}</Text>
+        </TouchableOpacity>
+      )}
     </View>
   )
 }
