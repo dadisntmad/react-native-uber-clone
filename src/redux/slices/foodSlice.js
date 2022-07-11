@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { fetchRestaurants } from '../actions/food'
+import { fetchRestaurants, fetchReviews } from '../actions/food'
 import { calculateTotalSum } from '../../components/utils/calculateTotalSum'
 
 const initialState = {
@@ -8,6 +8,7 @@ const initialState = {
   error: '',
   selectedFood: [],
   totalPrice: 0,
+  reviews: [],
 }
 
 const foodSlice = createSlice({
@@ -34,6 +35,18 @@ const foodSlice = createSlice({
       state.isLoading = true
     },
     [fetchRestaurants.rejected.type]: (state, action) => {
+      state.isLoading = false
+      state.error = action.payload
+    },
+    [fetchReviews.fulfilled.type]: (state, action) => {
+      state.isLoading = false
+      state.error = ''
+      state.reviews = action.payload
+    },
+    [fetchReviews.pending.type]: (state) => {
+      state.isLoading = true
+    },
+    [fetchReviews.rejected.type]: (state, action) => {
       state.isLoading = false
       state.error = action.payload
     },

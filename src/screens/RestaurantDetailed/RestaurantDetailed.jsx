@@ -77,13 +77,19 @@ export const RestaurantDetailed = () => {
     navigation.navigate('Cart')
   }
 
+  const onOpenModal = () => {
+    navigation.navigate('Reviews', {
+      id: route.params?.item.id,
+    })
+  }
+
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={{ uri: route.params?.item.image_url }} />
       <View style={styles.info}>
         <View>
           <Text style={styles.title}>{route.params?.item.name}</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onOpenModal}>
             <Text style={styles.reviews}>See {route.params?.item.review_count} reviews</Text>
           </TouchableOpacity>
         </View>
