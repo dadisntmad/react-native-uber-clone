@@ -1,10 +1,11 @@
 import React from 'react'
 import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native'
-import { useRoute } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectSelectedFood, selectTotalPrice } from '../../selectors/selectors'
 import { setSelectedFood } from '../../redux/slices/foodSlice'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
+import { auth, db } from '../../../firebase'
 
 import styles from './styles'
 
@@ -51,9 +52,12 @@ const data = [
 
 export const RestaurantDetailed = () => {
   const dispatch = useDispatch()
+  const navigation = useNavigation()
   const route = useRoute()
   const selectedFood = useSelector(selectSelectedFood)
   const totalPrice = useSelector(selectTotalPrice)
+
+  const currentUser = auth.currentUser?.uid
 
   const isFoodInCart = (food, cartItems) => Boolean(cartItems.find((item) => item.id === food.id))
 
@@ -64,6 +68,13 @@ export const RestaurantDetailed = () => {
         checkboxValue: checkboxValue,
       }),
     )
+  }
+
+  const onAddToCart = () => {
+    db.collection('orders').doc(currentUser).set({
+      food: selectedFood,
+    })
+    navigation.navigate('Cart')
   }
 
   return (
@@ -100,7 +111,7 @@ export const RestaurantDetailed = () => {
         ))}
       </ScrollView>
       {totalPrice > 0 && (
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={onAddToCart}>
           <Text style={styles.buttonText}>View cart ${totalPrice}</Text>
         </TouchableOpacity>
       )}
