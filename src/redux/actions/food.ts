@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import instance from '../../api/API'
 
-export const fetchRestaurants = createAsyncThunk('food/fetchRestaurants', async (city) => {
+export const fetchRestaurants = createAsyncThunk('food/fetchRestaurants', async (city: string) => {
   try {
     const response = await instance.get(`search?term=restaurants&location=${city}`)
     return response.data.businesses
@@ -10,7 +10,7 @@ export const fetchRestaurants = createAsyncThunk('food/fetchRestaurants', async 
   }
 })
 
-export const fetchReviews = createAsyncThunk('food/fetchReviews', async (restaurantId) => {
+export const fetchReviews = createAsyncThunk('food/fetchReviews', async (restaurantId: string) => {
   try {
     const response = await instance.get(`${restaurantId}/reviews`)
     return response.data.reviews
