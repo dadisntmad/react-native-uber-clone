@@ -5,18 +5,31 @@ import { auth, db } from '../../../firebase'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { signInSchemeValidation, signUpSchemeValidation } from '../../validation/validation'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../../types/navigation'
 
 import styles from './styles'
 
-export const AuthScreen = () => {
-  const navigation = useNavigation()
-  const [formType, setFormType] = useState('signin')
+type SignUpFormData = {
+  fullName: string
+  email: string
+  password: string
+}
+
+type SignInFormData = {
+  loginEmail: string
+  loginPassword: string
+}
+
+export const AuthScreen: React.FC = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
+  const [formType, setFormType] = useState<'signin' | 'signup'>('signin')
 
   const {
     control: controlSignUp,
     handleSubmit: handleSubmitSignUp,
     formState: { errors: errorsSignUp },
-  } = useForm({
+  } = useForm<SignUpFormData>({
     resolver: yupResolver(signUpSchemeValidation),
     defaultValues: {
       fullName: '',
@@ -29,7 +42,7 @@ export const AuthScreen = () => {
     control: controlSignIn,
     handleSubmit: handleSubmitSignIn,
     formState: { errors: errorsSignIn },
-  } = useForm({
+  } = useForm<SignInFormData>({
     resolver: yupResolver(signInSchemeValidation),
     defaultValues: {
       loginEmail: '',
@@ -45,7 +58,7 @@ export const AuthScreen = () => {
     setFormType('signin')
   }
 
-  const signUp = (values) => {
+  const signUp = (values: SignUpFormData) => {
     auth
       .createUserWithEmailAndPassword(values.email, values.password)
       .then((userCredential) => {
@@ -61,7 +74,7 @@ export const AuthScreen = () => {
       })
   }
 
-  const signIn = (values) => {
+  const signIn = (values: SignInFormData) => {
     auth
       .signInWithEmailAndPassword(values.loginEmail, values.loginPassword)
       .then((userCredential) => {

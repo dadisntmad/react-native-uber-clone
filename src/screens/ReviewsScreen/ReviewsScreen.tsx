@@ -1,19 +1,24 @@
 import React, { useEffect } from 'react'
 import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native'
-import { useNavigation, useRoute } from '@react-navigation/native'
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchReviews } from '../../redux/actions/food'
 import { selectReviews } from '../../selectors/selectors'
+import { RootStackParamList } from '../../types/navigation'
+import { AppDispatch } from '../../redux/store'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import moment from 'moment'
 
 import { AntDesign } from '@expo/vector-icons'
 
 import styles from './styles'
 
-export const ReviewsScreen = () => {
-  const dispatch = useDispatch()
-  const route = useRoute()
-  const navigation = useNavigation()
+type ReviewsScreenRouteProp = RouteProp<RootStackParamList, 'Reviews'>
+
+export const ReviewsScreen: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>()
+  const route = useRoute<ReviewsScreenRouteProp>()
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
   const reviews = useSelector(selectReviews)
 
   const restaurantId = route.params?.id
@@ -35,7 +40,7 @@ export const ReviewsScreen = () => {
         data={reviews}
         keyExtractor={({ id }) => id}
         renderItem={({ item }) => (
-          <View style={styles.review}>
+          <View>
             <View style={styles.user}>
               <Image style={styles.image} source={{ uri: item.user?.image_url }} />
               <View>

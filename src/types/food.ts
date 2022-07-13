@@ -12,6 +12,7 @@ export type Restaurants = {
   image_url: string
   name: string
   rating: number
+  review_count: number
 }
 
 export type SelectedFood = {
@@ -33,4 +34,12 @@ export type Reviews = {
 type User = {
   image_url: string
   name: string
+}
+
+export type Food = {
+  id: string
+  title: string
+  description: string
+  price: string
+  image: string
 }

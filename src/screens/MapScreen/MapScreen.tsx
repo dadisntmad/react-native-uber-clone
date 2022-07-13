@@ -4,16 +4,20 @@ import { Map } from '../../components/Map/Map'
 import { NavigateCard } from '../../components/NavigateCard/NavigateCard'
 import { RideOptions } from '../../components/RideOptions/RideOptions'
 import { useNavigation } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationProp,
+} from '@react-navigation/native-stack'
+import { RootStackParamList } from '../../types/navigation'
 
 import { Feather } from '@expo/vector-icons'
 
 import styles from './styles'
 
-const Stack = createNativeStackNavigator()
+const Stack = createNativeStackNavigator<RootStackParamList>()
 
-export const MapScreen = () => {
-  const navigation = useNavigation()
+export const MapScreen: React.FC = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
 
   const navigateBack = () => {
     navigation.goBack()

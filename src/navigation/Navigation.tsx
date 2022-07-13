@@ -7,8 +7,9 @@ import { CartScreen } from '../screens/CartScreen/CartScreen'
 import { ReviewsScreen } from '../screens/ReviewsScreen/ReviewsScreen'
 import { RestaurantDetailed } from '../screens/RestaurantDetailed/RestaurantDetailed'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../types/navigation'
 
-const Stack = createNativeStackNavigator()
+const Stack = createNativeStackNavigator<RootStackParamList>()
 
 export const Navigation = () => {
   return (

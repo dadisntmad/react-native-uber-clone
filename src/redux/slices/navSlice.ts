@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { NavSliceState } from '../../types/nav'
+import { NavSliceState, Origin } from '../../types/nav'
 
 const initialState: NavSliceState = {
-  origin: '',
+  origin: {} as Origin,
   destination: '',
   travelTimeInformation: '',
 }
@@ -11,7 +11,7 @@ const navSlice = createSlice({
   name: 'nav',
   initialState,
   reducers: {
-    setOrigin(state, action: PayloadAction<string>) {
+    setOrigin(state, action: PayloadAction<Origin>) {
       state.origin = action.payload
     },
     setDestination(state, action: PayloadAction<string>) {

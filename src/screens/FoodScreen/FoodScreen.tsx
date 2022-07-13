@@ -5,15 +5,18 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchRestaurants } from '../../redux/actions/food'
 import { selectOrigin, selectRestaurants } from '../../selectors/selectors'
 import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../../types/navigation'
 
 import cart from '../../../assets/shopping-bag.png'
 import { AntDesign } from '@expo/vector-icons'
 
 import styles from './styles'
+import { AppDispatch } from '../../redux/store'
 
-export const FoodScreen = () => {
-  const dispatch = useDispatch()
-  const navigation = useNavigation()
+export const FoodScreen: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>()
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
   const restaurants = useSelector(selectRestaurants)
   const location = useSelector(selectOrigin)
 

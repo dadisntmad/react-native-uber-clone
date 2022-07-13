@@ -2,15 +2,18 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { auth, db } from '../../../firebase'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../../types/navigation'
+import { Food } from '../../types/food'
 
 import emptyCart from '../../../assets/empty.png'
 import { AntDesign } from '@expo/vector-icons'
 
 import styles from './styles'
 
-export const CartScreen = () => {
-  const navigation = useNavigation()
-  const [cartFood, setCartFood] = useState([])
+export const CartScreen: React.FC = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
+  const [cartFood, setCartFood] = useState<Food[]>([])
 
   const currentUser = auth.currentUser?.uid
 
@@ -22,7 +25,7 @@ export const CartScreen = () => {
     const fetchCart = async () => {
       const doc = await db.collection('orders').doc(currentUser).get()
       const data = doc.data()
-      if (!data.food) {
+      if (!data?.food) {
         setCartFood([])
       } else {
         setCartFood(data.food)

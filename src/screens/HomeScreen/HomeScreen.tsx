@@ -8,6 +8,9 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { GOOGLE_API_KEY } from '@env'
 import { useDispatch } from 'react-redux'
 import { setDestination, setOrigin } from '../../redux/slices/navSlice'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../../types/navigation'
+import { Origin } from '../../types/nav'
 
 import logo from '../../../assets/logo.png'
 
@@ -15,9 +18,9 @@ import { Ionicons } from '@expo/vector-icons'
 
 import styles from './styles'
 
-export const HomeScreen = () => {
+export const HomeScreen: React.FC = () => {
   const dispatch = useDispatch()
-  const navigation = useNavigation()
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
 
   const signOut = () => {
     auth.signOut().then(() => {
@@ -43,7 +46,7 @@ export const HomeScreen = () => {
           },
         }}
         placeholder="Where from?"
-        onPress={(data, details = null) => {
+        onPress={(data: Origin, details: Origin) => {
           dispatch(
             setOrigin({
               location: details.geometry.location,

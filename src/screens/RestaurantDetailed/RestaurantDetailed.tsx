@@ -1,11 +1,14 @@
 import React from 'react'
 import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native'
-import { useNavigation, useRoute } from '@react-navigation/native'
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectSelectedFood, selectTotalPrice } from '../../selectors/selectors'
 import { setSelectedFood } from '../../redux/slices/foodSlice'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
 import { auth, db } from '../../../firebase'
+import { Food, SelectedFood } from '../../types/food'
+import { RootStackParamList } from '../../types/navigation'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 
 import styles from './styles'
 
@@ -50,18 +53,21 @@ const data = [
   },
 ]
 
-export const RestaurantDetailed = () => {
+type RestaurantDetailedRouteProp = RouteProp<RootStackParamList, 'Restaurant'>
+
+export const RestaurantDetailed: React.FC = () => {
   const dispatch = useDispatch()
-  const navigation = useNavigation()
-  const route = useRoute()
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
+  const route = useRoute<RestaurantDetailedRouteProp>()
   const selectedFood = useSelector(selectSelectedFood)
   const totalPrice = useSelector(selectTotalPrice)
 
   const currentUser = auth.currentUser?.uid
 
-  const isFoodInCart = (food, cartItems) => Boolean(cartItems.find((item) => item.id === food.id))
+  const isFoodInCart = (food: Food, cartItems: SelectedFood[]) =>
+    Boolean(cartItems.find((item) => item.id === food.id))
 
-  const selectFood = (item, checkboxValue) => {
+  const selectFood = (item: Food, checkboxValue: boolean) => {
     dispatch(
       setSelectedFood({
         ...item,
