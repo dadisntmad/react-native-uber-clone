@@ -1,6 +1,6 @@
 export type NavSliceState = {
   origin: Origin
-  destination: string
+  destination: Origin
   travelTimeInformation: string
 }
 

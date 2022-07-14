@@ -7,7 +7,7 @@ import { selectDestination, selectOrigin } from '../../selectors/selectors'
 import { GOOGLE_API_KEY } from '@env'
 import axios from 'axios'
 
-export const Map = () => {
+export const Map: React.FC = () => {
   const dispatch = useDispatch()
   const origin = useSelector(selectOrigin)
   const destination = useSelector(selectDestination)

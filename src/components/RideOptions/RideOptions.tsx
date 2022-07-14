@@ -36,9 +36,9 @@ const data = [
 
 const SURGE_CHARGE_RATE = 1.5
 
-export const RideOptions = () => {
+export const RideOptions: React.FC = () => {
   const navigation = useNavigation()
-  const [selected, setSelected] = useState(null)
+  const [selected, setSelected] = useState({ id: '', title: '' })
   const travelTimeInformation = useSelector(selectTravelTimeInformation)
 
   const getBack = () => {
@@ -67,9 +67,9 @@ export const RideOptions = () => {
               <Text>Travel time: ~{travelTimeInformation?.duration?.text} </Text>
             </View>
             <Text style={styles.price}>
-              {new Intl.NumberFormat('uk-ua', {
+              {new Intl.NumberFormat('us-us', {
                 style: 'currency',
-                currency: 'UAH',
+                currency: 'USD',
               }).format(
                 (travelTimeInformation?.duration?.value * SURGE_CHARGE_RATE * item.multiplier) /
                   100,

@@ -8,12 +8,15 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { useDispatch } from 'react-redux'
 import { setDestination } from '../../redux/slices/navSlice'
 import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../../types/navigation'
 
 import styles from './styles'
+import { Origin } from '../../types/nav'
 
-export const NavigateCard = () => {
+export const NavigateCard: React.FC = () => {
   const dispatch = useDispatch()
-  const navigation = useNavigation()
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
   const [user, setUser] = useState([])
 
   const currentUser = auth.currentUser?.uid
@@ -56,7 +59,7 @@ export const NavigateCard = () => {
             },
           }}
           placeholder="Where to?"
-          onPress={(data, details = null) => {
+          onPress={(data: Origin, details: Origin) => {
             dispatch(
               setDestination({
                 location: details.geometry.location,

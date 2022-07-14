@@ -1,6 +1,8 @@
 import React from 'react'
 import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../../types/navigation'
 
 import car from '../../../assets/car.png'
 import food from '../../../assets/food.png'
@@ -24,8 +26,8 @@ const data = [
   },
 ]
 
-export const NavOptions = () => {
-  const navigation = useNavigation()
+export const NavOptions: React.FC = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
 
   return (
     <FlatList

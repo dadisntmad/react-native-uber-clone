@@ -3,7 +3,7 @@ import { NavSliceState, Origin } from '../../types/nav'
 
 const initialState: NavSliceState = {
   origin: {} as Origin,
-  destination: '',
+  destination: {} as Origin,
   travelTimeInformation: '',
 }
 
@@ -14,7 +14,7 @@ const navSlice = createSlice({
     setOrigin(state, action: PayloadAction<Origin>) {
       state.origin = action.payload
     },
-    setDestination(state, action: PayloadAction<string>) {
+    setDestination(state, action: PayloadAction<Origin>) {
       state.destination = action.payload
     },
     setTravelTimeInformation(state, action: PayloadAction<string>) {

@@ -20,7 +20,7 @@ const data = [
   },
 ]
 
-export const NavFavorites = () => {
+export const NavFavorites: React.FC = () => {
   return (
     <FlatList
       data={data}

@@ -43,7 +43,7 @@ const data = [
   },
 ]
 
-export const FoodTypes = () => {
+export const FoodTypes: React.FC = () => {
   return (
     <FlatList
       data={data}

@@ -1,4 +1,4 @@
-export const greetUser = (user) => {
+export const greetUser = (user: string): string => {
   const date = new Date()
   const hours = date.getHours()
 
